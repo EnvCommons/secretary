@@ -19,11 +19,11 @@ Secretary does not require a sandbox. It has minimal compute requirements.
 
 ## License
 
-[MIT](https://github.com/LeonGuertler/TextArena/blob/main/LICENSE).
+[MIT](https://opensource.org/licenses/MIT). TextArena itself is also released under MIT.
 
 ## Tasks
 
-There are two splits: train (300 tasks) and test (300 tasks). Each split contains 50 tasks across each of 6 variants:
+There are 300 tasks in the `train` split and 300 in `test`. Each split contains 50 tasks for each of 6 TextArena variants (Secretary-v0 variants have 5 candidates, Secretary-v0-long variants have 10):
 
 - **Secretary-v0**
 - **Secretary-v0-long**
@@ -32,11 +32,11 @@ There are two splits: train (300 tasks) and test (300 tasks). Each split contain
 - **Secretary-v0-raw**
 - **Secretary-v0-train**
 
-Each task is seeded for reproducibility.
+Each task is seeded for reproducibility: train uses seeds 0 to 49 and test uses seeds 10000 to 10049.
 
 ## Reward Structure
 
-This is a sparse reward environment. The reward is determined by whether the agent successfully selects the best candidate from the pool. Rewards are returned directly from TextArena without mapping.
+This is a sparse reward environment with a single reward at the end of the game: 1.0 if the accepted candidate is the best in the pool and 0.0 otherwise. If the agent skips every candidate, the last one is accepted automatically. Rewards are returned directly from TextArena without mapping. All intermediate steps have reward 0.
 
 We do not use LLM graders for this environment; reward is determined programmatically.
 
@@ -53,11 +53,7 @@ Agents are given two tools:
 
 ## Time Horizon
 
-Secretary is a multi-turn environment.
-
-## Environment Difficulty
-
-This environment presents moderate to challenging difficulty, requiring agents to develop threshold-based strategies that balance gathering information with committing to decisions.
+Secretary is a multi-turn environment. Each tool call reveals at most one new candidate, so an episode lasts at most 5 or 10 tool calls depending on the variant.
 
 ## Other Environment Requirements
 
@@ -70,11 +66,13 @@ Agents in Secretary interact only with a sequential decision-making game and hav
 ## Citations
 
 ```bibtex
-@software{textarena2024,
-  author    = {Guertler, Leon and Banting, Wilfried and Pignatelli, Eduardo},
-  title     = {TextArena},
-  year      = {2024},
-  publisher = {GitHub},
-  url       = {https://github.com/LeonGuertler/TextArena}
+@misc{guertler2025textarena,
+    title={TextArena},
+    author={Leon Guertler and Bobby Cheng and Simon Yu and Bo Liu and Leshem Choshen and Cheston Tan},
+    year={2025},
+    eprint={2504.11442},
+    archivePrefix={arXiv},
+    primaryClass={cs.CL},
+    url={https://arxiv.org/abs/2504.11442},
 }
 ```
